@@ -2,13 +2,14 @@
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 
+	let mounted = false;
 	let totalBattery = writable<number | null>(50);
 	let batteryRemaining = writable(50);
 	let estMiKwh = writable(3.5);
 	let dialogOpen = false;
 
 	$: {
-		if (typeof window !== 'undefined') {
+		if (typeof window !== 'undefined' && mounted) {
 			localStorage.setItem('totalBattery', $totalBattery?.toString() ?? '0');
 			localStorage.setItem('batteryRemaining', $batteryRemaining.toString());
 			localStorage.setItem('estMiKwh', $estMiKwh.toString());
@@ -29,8 +30,17 @@
 		if (storedEstMiKwh) {
 			estMiKwh.set(parseFloat(storedEstMiKwh));
 		}
+
+		mounted = true;
 	});
 </script>
+
+<svelte:head>
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	/>
+</svelte:head>
 
 <main>
 	<h1>Remaining EV Range Calculator</h1>
@@ -95,63 +105,109 @@
 	{/if}
 
 	<section>
-		<h2>Estimated range</h2>
-		<p class="range">
-			Until 20%: {((($batteryRemaining - 20) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(1)} mi
-		</p>
-		<p class="range">
-			Until 15%: {((($batteryRemaining - 15) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(1)} mi
-		</p>
-		<p class="range">
-			Until 10%: {((($batteryRemaining - 10) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(1)} mi
-		</p>
+		<h2>Estimated range until</h2>
+		<div class="range">
+			<div class="label">20%</div>
+			<div class="value">
+				{((($batteryRemaining - 20) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(0)}<span
+					>mi</span
+				>
+			</div>
+		</div>
+		<div class="range">
+			<div class="label">15%</div>
+			<div class="value">
+				{((($batteryRemaining - 15) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(0)}<span
+					>mi</span
+				>
+			</div>
+		</div>
+		<div class="range">
+			<div class="label">10%</div>
+			<div class="value">
+				{((($batteryRemaining - 10) / 100) * ($totalBattery ?? 0) * $estMiKwh).toFixed(0)}<span
+					>mi</span
+				>
+			</div>
+		</div>
 	</section>
 </main>
 
 <style lang="scss">
 	:global(body) {
-		font-family: system-ui, sans-serif;
-		background-color: #222;
-		color: #eee;
+		font-family: 'Inter', sans-serif;
+		background-color: #1a1a1a;
+		color: #f0f0f0;
 	}
-
 	main {
 		max-width: 400px;
 		margin: 0 auto;
-		padding: 1rem;
+		padding: 2rem;
+		background-color: #222;
+		border-radius: 8px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	}
-
 	h1 {
-		margin-bottom: 1.5rem;
+		font-size: 2rem;
+		font-weight: 600;
+		margin-top: 0;
+		margin-bottom: 2rem;
+		color: #f0f0f0;
 	}
-
+	h2 {
+		font-size: 1.2em;
+	}
 	a {
-		color: inherit;
-		text-decoration: underline;
+		color: #66b3ff;
+		font-size: 0.7em;
+		text-decoration: none;
+		transition: color 0.2s;
 	}
-
 	a:hover,
 	a:active {
-		text-decoration: none;
+		color: #99ccff;
 	}
-
 	dialog {
-		background-color: #333;
+		background-color: #2d2d2d;
 		border: none;
-		border-radius: 4px;
-		padding: 1rem;
+		border-radius: 8px;
+		padding: 1.5rem;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	}
-
 	input[type='range'] {
 		position: relative;
 		width: 100%;
 		z-index: 1;
+		appearance: none;
+		background-color: #444;
+		height: 4px;
+		border-radius: 2px;
+		outline: none;
+		margin-bottom: 1rem;
 	}
-
+	input[type='range']::-webkit-slider-thumb {
+		appearance: none;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		background-color: #66b3ff;
+		cursor: pointer;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	}
 	section {
-		margin-top: 2rem;
+		margin-top: 1.5rem;
 	}
-
+	.label {
+		font-size: 1.1rem;
+		font-weight: 500;
+		margin-bottom: 0.5rem;
+		color: #ccc;
+	}
+	.amount {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: #f0f0f0;
+	}
 	.number-labels {
 		display: flex;
 		justify-content: space-between;
@@ -160,26 +216,52 @@
 		margin: auto;
 		color: #aaa;
 		font-size: 14px;
-		font-weight: 700;
-
+		font-weight: 500;
 		> div {
 			display: flex;
 			justify-content: center;
 			position: relative;
 			width: 0;
-
 			&::after {
 				content: '';
 				position: absolute;
 				bottom: 100%;
 				width: 2px;
 				height: 8px;
-				background: #aaa;
+				background: #666;
 			}
 		}
 	}
+	.range {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 10px;
+		font-size: 1.2rem;
+		font-weight: 500;
+		line-height: 1.1;
+		color: #ccc;
+		&:nth-of-type(2) {
+			font-size: 0.9em;
+		}
+		&:nth-of-type(3) {
+			font-size: 0.6em;
+		}
 
-	.range:first-of-type {
-		font-size: 1.5rem;
+		.label {
+			margin-bottom: 0;
+			font-size: max(14px, 1em);
+		}
+
+		.value {
+			font-size: 2em;
+			font-weight: 900;
+
+			span {
+				margin-left: 0.2em;
+				font-size: 0.8em;
+				font-weight: 400;
+			}
+		}
 	}
 </style>
