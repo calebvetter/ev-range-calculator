@@ -1,15 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark" style="color-scheme: dark">
 	<head>
 		<meta charset="utf-8" />
+		<title>EV Range Calculator</title>
+		<meta name="description" content="A simple app for calculating the remaining EV range." />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		%sveltekit.head%
-
-		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+		<link rel="icon" type="image/png" sizes="192x192" href="%sveltekit.assets%/icon-192.png" />
+		<link rel="icon" type="image/png" sizes="512x512" href="%sveltekit.assets%/icon-512.png" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/icon-192.png" sizes="192x192" />
+		<link rel="mask-icon" href="%sveltekit.assets%/mask-icon.svg" color="#FFFFFF" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+		/>
 		<meta name="theme-color" content="#222222" />
+		%sveltekit.head%
 	</head>
-	<body>
-		<div>%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>
