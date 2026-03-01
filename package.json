@@ -45,9 +45,9 @@
 		"tw-animate-css": "^1.2.4",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
-		"vite": "^6.0.0",
+		"vite": "^6.4.1",
 		"vite-plugin-pwa": "^0.21.2",
-		"workbox-window": "^7.3.0"
+		"workbox-window": "^7.4.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
