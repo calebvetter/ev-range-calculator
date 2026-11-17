@@ -1,5 +1,5 @@
-/// <reference types="vite-plugin-pwa/info" />
-/// <reference types="vite-plugin-pwa/client" />
+/// <reference types="@unplugin-pwa/core/info" />
+/// <reference types="@unplugin-pwa/core/vanillajs" />
 
 declare global {
 	namespace App {

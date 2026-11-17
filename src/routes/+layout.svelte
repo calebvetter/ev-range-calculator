@@ -10,7 +10,7 @@
 			const { registerSW } = await import('virtual:pwa-register');
 			registerSW({
 				immediate: true,
-				onRegistered(r) {
+				onRegisteredSW(_swUrl, r) {
 					r?.update();
 				},
 				onRegisterError(error) {
