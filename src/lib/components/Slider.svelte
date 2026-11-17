@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
-	import * as Popover from '$lib/components/ui/popover';
+	import { cn } from '#lib/utils.ts';
+	import * as Popover from '#lib/components/ui/popover/index.ts';
 	import type { Snippet } from 'svelte';
 
 	type Props = {

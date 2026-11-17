@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import Slider from '$lib/components/Slider.svelte';
+	import * as Dialog from '#lib/components/ui/dialog/index.ts';
+	import Slider from '#lib/components/Slider.svelte';
 	import Fa from 'svelte-fa';
 	import { faCarSide } from '@fortawesome/free-solid-svg-icons';
 
